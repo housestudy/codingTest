@@ -63,9 +63,9 @@ def back(board, answer):
                 back(board, answer)
                 arr.pop()
 
+                board = [[0] * N for _ in range(N)]
                 for data in arr:
                     x, y = data[0], data[1]
-                    board = [[0] * N for _ in range(N)]
                     setBoard(board, x, y)
 
 
