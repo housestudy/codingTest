@@ -118,3 +118,53 @@ def solution(n, m, x, y, r, c, k):
     return answer
 
 print(solution(n, m, x, y, r, c, k))
+
+# 답
+def solution(n, m, x, y, r, c, k):
+    counts = {'d': 0, 'l': 0, 'r': 0, 'u': 0}
+    extra = '' # 3번에 해당
+    
+    x_diff, y_diff = r - x, c - y
+    x_direction = 'u' if x_diff < 0 else 'd' # 탈출 지점의 방향
+    y_direction = 'l' if y_diff < 0 else 'r' # 탈출 지점의 방향
+    
+    # 아래, 왼쪽 벽과의 거리
+    x_wall, y_wall = min(n - x, n - r), min(y, c) - 1 
+    
+    # 맨해튼 거리를 초과하는 이동 수
+    extra_moves = k - (abs(x_diff) + abs(y_diff))
+
+    if extra_moves < 0 or extra_moves % 2 == 1:
+        return 'impossible'
+    
+    # 탈출 지점까지 이동
+    counts[x_direction] += abs(x_diff)
+    counts[y_direction] += abs(y_diff)
+
+	# 1번 & 5번
+    if extra_moves > x_wall * 2: # 여유가 있다면 벽을 찍고 돌아오고
+        counts['d'] += x_wall
+        counts['u'] += x_wall
+        extra_moves -= x_wall * 2
+    else:						# 아니라면 가능한 만큼만 아래로 다녀온다
+        counts['d'] += extra_moves // 2
+        counts['u'] += extra_moves // 2
+        extra_moves = 0
+    
+    # 2번 & 4번
+    if extra_moves > y_wall * 2: # 여유가 있다면 벽을 찍고 돌아오고
+        counts['l'] += y_wall
+        counts['r'] += y_wall
+        extra_moves -= y_wall * 2
+    else:						# 아니라면 가능한 만큼 왼쪽으로 다녀온다
+        counts['l'] += extra_moves // 2
+        counts['r'] += extra_moves // 2
+        extra_moves = 0
+
+	# 3번
+    if extra_moves > 0: # 그래도 여유가 있으면 rl 와리가리
+        extra = 'rl' * (extra_moves // 2)
+
+	# 빠른 순서대로 합친다
+    answer = counts['d'] * 'd' + counts['l'] * 'l' + extra + counts['r'] * 'r' + counts['u'] * 'u'
+    return answer
