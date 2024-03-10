@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Main {
+public class Solution {
     static int n,m;
     static int[][] graph;
     static boolean[][] visited;
@@ -61,4 +61,3 @@ public class Main {
         System.out.println(answer.get(answer.size()-1));
     }
 }
-
